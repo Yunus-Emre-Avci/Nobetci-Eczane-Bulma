@@ -13,6 +13,7 @@ import schemas
 from database import engine, get_db
 import scraper
 from config import settings
+from scheduler import start_scheduler, stop_scheduler, run_scraping_now
 
 # Template ayarı
 templates = Jinja2Templates(directory="templates")
@@ -28,6 +29,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Uygulama başlatıldığında scheduler'ı başlat
+@app.on_event("startup")
+async def startup_event():
+    start_scheduler()
+
+# Uygulama kapatıldığında scheduler'ı durdur
+@app.on_event("shutdown")
+async def shutdown_event():
+    stop_scheduler()
+
 # Admin Paneli Arayüzü (GET)
 @app.get("/admin")
 async def admin_panel(request: Request):
@@ -41,6 +52,15 @@ async def start_scrape(db: AsyncSession = Depends(get_db)):
         scraper.scrape_and_save_pharmacies(db), 
         media_type="text/event-stream"
     )
+
+# Manuel Scraping Testi (Scheduler'ı beklemeden hemen çalıştırmak için)
+@app.get("/admin/run-scraping-now")
+async def manual_scraping():
+    """
+    Zamanlanmış scraping'i beklemeden hemen çalıştırır (test amaçlı).
+    """
+    await run_scraping_now()
+    return {"message": "Scraping işlemi başlatıldı! Logları kontrol edin."}
 
 # 1. Tüm İlleri Listele
 @app.get("/iller/", response_model=List[schemas.IlResponse])

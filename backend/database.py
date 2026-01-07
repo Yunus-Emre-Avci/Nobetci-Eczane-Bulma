@@ -13,6 +13,9 @@ AsyncSessionLocal = sessionmaker(
     expire_on_commit=False
 )
 
+# Scheduler için async session factory
+async_session = AsyncSessionLocal
+
 Base = declarative_base()
 
 async def get_db():
