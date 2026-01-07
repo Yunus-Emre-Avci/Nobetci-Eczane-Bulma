@@ -226,6 +226,38 @@
           </div>
 
           <div v-else-if="filteredPharmacies.length > 0" class="space-y-4">
+            <!-- Uyarı Notu -->
+            <div
+              class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-2 border-amber-200 dark:border-amber-800/40 rounded-2xl p-5 shadow-sm"
+            >
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex-shrink-0 w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center"
+                >
+                  <Icon
+                    name="i-heroicons-exclamation-triangle-16-solid"
+                    class="w-6 h-6 text-white"
+                  />
+                </div>
+                <div class="flex-1 space-y-1">
+                  <h4
+                    class="text-sm font-black text-amber-900 dark:text-amber-400 uppercase tracking-wide"
+                  >
+                    ÖNEMLİ BİLGİLENDİRME
+                  </h4>
+                  <p
+                    class="text-sm text-amber-800 dark:text-amber-300 leading-relaxed font-medium"
+                  >
+                    Eczanelerin nöbet koşullarında istisnai durumlar
+                    yaşanabilmektedir. Herhangi bir mağduriyet yaşamamanız
+                    adına, ilgili eczaneye gitmeden önce telefonla iletişime
+                    geçerek açık olup olmadıklarını teyit etmeniz önemle tavsiye
+                    edilir.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <TransitionGroup name="list" tag="div" class="space-y-4">
               <PharmacyCard
                 v-for="pharmacy in filteredPharmacies"
